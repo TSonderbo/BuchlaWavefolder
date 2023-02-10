@@ -156,12 +156,15 @@ void FMSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer
             auto& decay = *apvts.getRawParameterValue("decay");
             auto& sustain = *apvts.getRawParameterValue("sustain");
             auto& release = *apvts.getRawParameterValue("release");
+            auto& amplitude = *apvts.getRawParameterValue("amplitude");
 
             voice->updateAdsr(attack, decay, sustain, release);
+            voice->updateAmplitude(amplitude);
         }
     }
 
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    scopeDataCollector.process(buffer.getReadPointer(0), (size_t)buffer.getNumSamples());
 }
 
 //==============================================================================
@@ -201,25 +204,20 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMSynthesizerAudioProcessor:
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
     //Inserts params here...
-    
-    //Combo box
-    auto choices = juce::StringArray{ "Sine", "Other choice"};
-    params.push_back(std::make_unique<juce::AudioParameterChoice>("sound_type", "Sound type", choices, 0));
-    
+        
     //ADSR
 	params.push_back(std::make_unique<juce::AudioParameterFloat>("attack", "Attack", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.1f));
 	params.push_back(std::make_unique<juce::AudioParameterFloat>("decay", "Decay", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.1f));
 	params.push_back(std::make_unique<juce::AudioParameterFloat>("sustain", "Sustain", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.9f));
 	params.push_back(std::make_unique<juce::AudioParameterFloat>("release", "Release", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.4f));
+    //Buchla
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("amplitude", "Amplitude", juce::NormalisableRange<float> {0.1f, 10.0f}, 0.1f));
 
-    //Chowning params
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("carrier1", "Carrier frequency 1", juce::NormalisableRange<float> {20.0f, 20000.0f}, 300.0f)); //P5
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("carrier2", "Carrier frequency 2", juce::NormalisableRange<float> {20.0f, 20000.0f}, 2100.0f)); //P12
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("modulating", "Modulating frequency", juce::NormalisableRange<float> {0.1f, 1.0f}, 300.0f)); //P6
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("modidx1", "Modulating index 1", juce::NormalisableRange<float> {0.1f, 25.0f}, 1.0f)); //P7
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("modidx2", "Modulating index 2", juce::NormalisableRange<float> {0.1f, 25.0f}, 3.0f)); //P8
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("scaleamp", "Scale Amp", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.2f)); //P10
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("scaledev", "Scale Dev", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.5f)); //P11
 
     return { params.begin(), params.end() };
+}
+
+AudioBufferQueue& FMSynthesizerAudioProcessor::getAudioBufferQueue() 
+{ 
+    return audioBufferQueue; 
 }

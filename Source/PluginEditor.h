@@ -10,6 +10,8 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "ADSR.h"
+#include "ScopeComponent.h"
 
 //==============================================================================
 /**
@@ -27,21 +29,23 @@ public:
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    juce::Slider attackSlider;
-    juce::Slider decaySlider;
-    juce::Slider sustainSlider;
-    juce::Slider releaseSlider;
-
-    juce::ComboBox soundSelector;
     
     FMSynthesizerAudioProcessor& audioProcessor;
 
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attackAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> decayAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> sustainAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> releaseAttachment;
+    using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
 
-    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> soundSelectorAttachment;
+    void setSliderWithLabel(juce::Slider& slider, juce::Label& label, juce::AudioProcessorValueTreeState& apvts, juce::String paramId, std::unique_ptr<Attachment>& attachment);
+
+    juce::Slider ampSlider;
+    juce::Label ampLabel{ "Amplitude", "Amp" };
+    
+    using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
+
+    std::unique_ptr<SliderAttachment> amplitudeAttachment;
+
+    ADSR adsr;
+    ScopeComponent scopeComponent;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FMSynthesizerAudioProcessorEditor)
 };

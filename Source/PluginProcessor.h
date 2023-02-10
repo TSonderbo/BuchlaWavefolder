@@ -11,6 +11,9 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "SynthVoice.h"
+#include "AudioBufferQueue.h"
+#include "ScopeDataCollector.h"
+
 //==============================================================================
 /**
 */
@@ -61,13 +64,16 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 
-
+    AudioBufferQueue& getAudioBufferQueue();
 private:
     juce::Synthesiser synth;
 
     
 
     juce::AudioProcessorValueTreeState::ParameterLayout createParams();
+
+    AudioBufferQueue audioBufferQueue;
+    ScopeDataCollector scopeDataCollector{ audioBufferQueue };
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FMSynthesizerAudioProcessor)

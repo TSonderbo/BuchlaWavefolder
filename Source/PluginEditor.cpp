@@ -12,31 +12,16 @@
 //==============================================================================
 FMSynthesizerAudioProcessorEditor::FMSynthesizerAudioProcessorEditor (FMSynthesizerAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
+    , adsr("Amp Envelope", audioProcessor.apvts, "attack", "decay", "sustain", "release")
+    , scopeComponent(audioProcessor.getAudioBufferQueue())
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (1200, 800);
 
-    attackAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "attack", attackSlider);
-    decayAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "decay", decaySlider);
-    sustainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "sustain", sustainSlider);
-    releaseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "release", releaseSlider);
-
-    soundSelectorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(audioProcessor.apvts, "sound_type", soundSelector);
-
-    attackSlider.setSliderStyle(juce::Slider::RotaryHorizontalDrag);
-    attackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
-    decaySlider.setSliderStyle(juce::Slider::RotaryHorizontalDrag);
-    decaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
-    sustainSlider.setSliderStyle(juce::Slider::RotaryHorizontalDrag);
-    sustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
-    releaseSlider.setSliderStyle(juce::Slider::RotaryHorizontalDrag);
-    releaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
-
-    addAndMakeVisible(attackSlider);
-    addAndMakeVisible(decaySlider);
-    addAndMakeVisible(sustainSlider);
-    addAndMakeVisible(releaseSlider);
+    addAndMakeVisible(adsr);
+    addAndMakeVisible(scopeComponent);
+    setSliderWithLabel(ampSlider, ampLabel, audioProcessor.apvts, "amplitude", amplitudeAttachment);
 }
 
 FMSynthesizerAudioProcessorEditor::~FMSynthesizerAudioProcessorEditor()
@@ -59,15 +44,28 @@ void FMSynthesizerAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 
-    const auto bounds = getLocalBounds().reduced(50);
-    const auto padding = 10;
-    const auto sliderWidth = bounds.getWidth() / 4 - padding;
-    const auto sliderHeight = bounds.getWidth() / 4 - padding;
-    const auto sliderStartX = 0;
-    const auto sliderStartY = bounds.getHeight() / 2 - sliderHeight / 2;
+    const auto paddingX = 5;
+    const auto paddingY = 35;
+    const auto paddingY2 = 235;
 
-    attackSlider.setBounds(sliderStartX, sliderStartY, sliderWidth, sliderHeight);
-    decaySlider.setBounds(attackSlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
-    sustainSlider.setBounds(decaySlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
-    releaseSlider.setBounds(sustainSlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
+    adsr.setBounds(paddingX, paddingY, 300, 200);
+    ampSlider.setBounds(adsr.getRight(), paddingY, 50, 200);
+    scopeComponent.setBounds(paddingX, 300, 1000, 500);
+
+}
+
+using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
+
+void FMSynthesizerAudioProcessorEditor::setSliderWithLabel(juce::Slider& slider, juce::Label& label, juce::AudioProcessorValueTreeState& apvts, juce::String paramId, std::unique_ptr<Attachment>& attachment)
+{
+    slider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
+    addAndMakeVisible(slider);
+
+    attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, paramId, slider);
+
+    label.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
+    label.setFont(15.0f);
+    label.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(label);
 }

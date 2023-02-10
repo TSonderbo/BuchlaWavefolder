@@ -19,13 +19,11 @@ bool SynthVoice::canPlaySound(juce::SynthesiserSound* sound)
 void SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
 {
 	adsr.noteOn();
-	osc.setFrequency(juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber));
+	
+	double freq = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
 
-	float modfreq = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber) * modScalar;
-	fmOsc.setFrequency(modfreq);
-
-	float carrier2Freq = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber) * carrier2Scalar;
-	osc2.setFrequency(carrier2Freq);
+	osc.setFrequency(freq);
+	buchla.setFundemental(freq);
 }
 
 void SynthVoice::stopNote(float velocity, bool allowTailOff)
@@ -47,9 +45,8 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numCh
 
 	osc.prepare(spec);
 	gain.prepare(spec);
-
-	gain.setGainLinear(0.3f);
-
+	buchla.prepareToPlay(sampleRate);
+	gain.setGainLinear(0.1f);
 	adsr.setSampleRate(sampleRate);
 
 	isPrepared = true;
@@ -65,14 +62,10 @@ void SynthVoice::updateAdsr(const float attack, const float decay, const float s
 	adsr.setParameters(adsrParams);
 }
 
-void SynthVoice::updateFmAdsr(const float attack, const float decay, const float sustain, const float release)
+void SynthVoice::updateAmplitude(const float A)
 {
-	fmAdsrParams.attack = attack;
-	fmAdsrParams.decay = decay;
-	fmAdsrParams.sustain = sustain;
-	fmAdsrParams.release = release;
-
-	fmAdsr.setParameters(fmAdsrParams);
+	buchla.setAmplitude(A);
+	this->A = A;
 }
 
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
@@ -81,35 +74,15 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
 	while (--numSamples >= 0)
 	{
+		float sample = osc.processSample(0) * A;
 
-		//TODO - NOT This basically
-		//Calculate the three oscilators used
+		sample = buchla.processSample(sample);
 
-		float fmFreq = fmOsc.processSample(0);
+		//sample *= adsr.getNextSample();
 
-		// P7*P6
-		float fmMod = fmFreq * fmDepth1;
+		//sample = gain.processSample(sample);
 
-		// Addition
-		float mod = fmMod + 1; // fmAdsr.getNextSample();
 		
-		mod = fmFreq * mod;
-
-		float modC = mod + osc.processSample(0);
-
-		float amp = adsr.getNextSample();
-
-		modC *= amp;
-
-		mod *= scaleDev;
-
-		mod += osc2.processSample(0);
-
-		mod *= scaleAmp;
-
-		float sample = mod + modC;
-		
-		sample = gain.processSample(sample);
 		for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
 		{
 			outputBuffer.addSample(channel, startSample, sample);

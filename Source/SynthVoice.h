@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "SynthSound.h"
+#include "BuchlaWavefolder.h"
 
 class SynthVoice : public juce::SynthesiserVoice
 {
@@ -24,8 +25,12 @@ public:
 	void renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
 	void pitchWheelMoved(int newPitchWheelValue) override;
 	void updateAdsr(const float attack, const float decay, const float sustain, const float release);
-	void updateFmAdsr(const float attack, const float decay, const float sustain, const float release);
+	void updateAmplitude(const float A);
 private:
+
+	BuchlaWavefolder buchla;
+
+	float A;
 
 	juce::ADSR adsr;
 	juce::ADSR::Parameters adsrParams;
@@ -35,21 +40,4 @@ private:
 	juce::dsp::Oscillator<float> osc2{ [](float x) {return std::sin(x); } };
 	juce::dsp::Gain<float> gain;
 	bool isPrepared = false;
-
-	//FM Envelope
-	juce::ADSR fmAdsr;
-	juce::ADSR::Parameters fmAdsrParams;
-	
-	//Scalars
-	float modScalar{ 0.6f };
-	float carrier2Scalar{ 1.0f };
-
-	float fmDepth1{ 0.0f };
-	float fmDepth2{ 0.25f };
-
-	float scaleAmp{ 0.2f };
-	float scaleDev{ 0.2f };
-
-
-	juce::dsp::Oscillator<float> fmOsc{ [](float x) {return std::sin(x); } };
 };

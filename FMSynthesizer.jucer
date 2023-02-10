@@ -5,9 +5,38 @@
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="dOS9tF" name="FMSynthesizer">
     <GROUP id="{BEE3B2D0-A033-347A-C8F7-E13063A5882B}" name="Source">
-      <FILE id="BpETgf" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
-      <FILE id="cVFfwF" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
-      <FILE id="CRnVqG" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
+      <GROUP id="{0CD72FAE-1C54-1E29-C0FE-CFDB34D71D14}" name="AudioScope">
+        <FILE id="UVsccj" name="AudioBufferQueue.cpp" compile="1" resource="0"
+              file="Source/AudioBufferQueue.cpp"/>
+        <FILE id="pEREBv" name="ScopeDataCollector.h" compile="0" resource="0"
+              file="Source/ScopeDataCollector.h"/>
+        <FILE id="sF2suQ" name="AudioBufferQueue.h" compile="0" resource="0"
+              file="Source/AudioBufferQueue.h"/>
+        <FILE id="AMdBqz" name="ScopeDataCollector.cpp" compile="1" resource="0"
+              file="Source/ScopeDataCollector.cpp"/>
+      </GROUP>
+      <GROUP id="{D184223B-C5B8-3585-EB2E-BEA941807E58}" name="Synth">
+        <FILE id="cVFfwF" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
+        <FILE id="CRnVqG" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
+        <FILE id="BpETgf" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
+      </GROUP>
+      <GROUP id="{4F82D4C0-9765-C497-4DD4-27FFB171570B}" name="Components">
+        <FILE id="ttuV1C" name="ScopeComponent.h" compile="0" resource="0"
+              file="Source/ScopeComponent.h"/>
+        <FILE id="gWqFK5" name="ScopeComponent.cpp" compile="1" resource="0"
+              file="Source/ScopeComponent.cpp"/>
+        <FILE id="BwYm00" name="ADSR.h" compile="0" resource="0" file="Source/ADSR.h"/>
+        <FILE id="W6IJw1" name="ADSR.cpp" compile="1" resource="0" file="Source/ADSR.cpp"/>
+      </GROUP>
+      <GROUP id="{B38919B4-9812-ABC1-4060-1ED2503A9FC0}" name="Wavefolder">
+        <FILE id="B66b0o" name="BuchlaWavefolder.cpp" compile="1" resource="0"
+              file="Source/BuchlaWavefolder.cpp"/>
+        <FILE id="Ly4Fz5" name="BuchlaWavefolder.h" compile="0" resource="0"
+              file="Source/BuchlaWavefolder.h"/>
+        <FILE id="F2loGA" name="FoldingBranch.cpp" compile="1" resource="0"
+              file="Source/FoldingBranch.cpp"/>
+        <FILE id="s8mBm3" name="FoldingBranch.h" compile="0" resource="0" file="Source/FoldingBranch.h"/>
+      </GROUP>
       <FILE id="XIngte" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="F5LF3s" name="PluginProcessor.h" compile="0" resource="0"
