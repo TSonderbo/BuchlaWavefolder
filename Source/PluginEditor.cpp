@@ -12,14 +12,12 @@
 //==============================================================================
 FMSynthesizerAudioProcessorEditor::FMSynthesizerAudioProcessorEditor (FMSynthesizerAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
-    , adsr("Amp Envelope", audioProcessor.apvts, "attack", "decay", "sustain", "release")
     , scopeComponent(audioProcessor.getAudioBufferQueue())
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (1200, 800);
+    setSize (1060, 500);
 
-    addAndMakeVisible(adsr);
     addAndMakeVisible(scopeComponent);
     setSliderWithLabel(ampSlider, ampLabel, audioProcessor.apvts, "amplitude", amplitudeAttachment);
 }
@@ -45,13 +43,10 @@ void FMSynthesizerAudioProcessorEditor::resized()
     // subcomponents in your editor..
 
     const auto paddingX = 5;
-    const auto paddingY = 35;
-    const auto paddingY2 = 235;
-
-    adsr.setBounds(paddingX, paddingY, 300, 200);
-    ampSlider.setBounds(adsr.getRight(), paddingY, 50, 200);
-    scopeComponent.setBounds(paddingX, 300, 1000, 500);
-
+    const auto paddingY = 5;
+    
+    scopeComponent.setBounds(paddingX, paddingY, 1000, getHeight() - (2 * paddingY));
+    ampSlider.setBounds(scopeComponent.getRight(), paddingY, 50, getHeight() - (2 * paddingY));
 }
 
 using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;

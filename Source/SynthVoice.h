@@ -40,4 +40,6 @@ private:
 	juce::dsp::Oscillator<float> osc2{ [](float x) {return std::sin(x); } };
 	juce::dsp::Gain<float> gain;
 	bool isPrepared = false;
+
+	
 };

@@ -152,13 +152,8 @@ void FMSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer
     {
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
         {
-            auto& attack = *apvts.getRawParameterValue("attack");
-            auto& decay = *apvts.getRawParameterValue("decay");
-            auto& sustain = *apvts.getRawParameterValue("sustain");
-            auto& release = *apvts.getRawParameterValue("release");
             auto& amplitude = *apvts.getRawParameterValue("amplitude");
 
-            voice->updateAdsr(attack, decay, sustain, release);
             voice->updateAmplitude(amplitude);
         }
     }
@@ -204,12 +199,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMSynthesizerAudioProcessor:
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
     //Inserts params here...
-        
-    //ADSR
-	params.push_back(std::make_unique<juce::AudioParameterFloat>("attack", "Attack", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.1f));
-	params.push_back(std::make_unique<juce::AudioParameterFloat>("decay", "Decay", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.1f));
-	params.push_back(std::make_unique<juce::AudioParameterFloat>("sustain", "Sustain", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.9f));
-	params.push_back(std::make_unique<juce::AudioParameterFloat>("release", "Release", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.4f));
     //Buchla
     params.push_back(std::make_unique<juce::AudioParameterFloat>("amplitude", "Amplitude", juce::NormalisableRange<float> {0.1f, 10.0f}, 0.1f));
 

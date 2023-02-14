@@ -26,7 +26,7 @@ void ScopeDataCollector::process(const float* data, size_t numSamples)
         {
             auto currentSample = *data++;
 
-            if (currentSample >= triggerLevel && prevSample < triggerLevel)
+            if (abs(currentSample) >= triggerLevel) // && prevSample < triggerLevel
             {
                 numCollected = 0;
                 state = State::collecting;

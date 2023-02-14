@@ -22,9 +22,10 @@ public:
     void setAmplitude(float A);
 private:
     float lowpass(float vIn);
-    float sampleRate;
-    float T;
 
+    float sampleRate;
+
+    //Folding branches
     FoldingBranch branch1{ 10000.0f, 100000.0f };
     FoldingBranch branch2{ 49900.0f, 43200.0f };
     FoldingBranch branch3{ 91000.0f, 56000.0f };
@@ -34,4 +35,9 @@ private:
     //History
     float vIn_n1;
     float vOut_n1;
+
+    //lowpass coeffs
+    float b0;
+    float b1;
+    float a1;
 };

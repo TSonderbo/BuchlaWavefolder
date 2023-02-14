@@ -18,7 +18,7 @@ ScopeComponent::ScopeComponent(Queue& queueToUse) : audioBufferQueue(queueToUse)
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
     sampleData.fill(float(0));
-    setFramesPerSecond(60);
+    setFramesPerSecond(30);
 }
 
 void ScopeComponent::setFramesPerSecond(int framesPerSecond)

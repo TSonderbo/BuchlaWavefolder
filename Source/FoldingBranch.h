@@ -25,27 +25,25 @@ public:
     void setAmplitude(float A);
 private:
     // Constants
-    const float vs = 6.0f;
-    const float thresh = 0.01f;
+    const float vs = 6.0f; //Voltage constant
     const double pi = 3.14159265358979323846;
 
     // Branch specific
-    float rk_1;
-    const float rk_2 = 100000.0f;
-    float rk_3;
-    float clip_thresh;
+    float rk_1; //Resistor
+    const float rk_2 = 100000.0f; //Resistor
+    float rk_3; //Resistor
+    float clip_thresh; //Clipping threshold
 
     //Util
-    double sampleRate = 48000;
-    float f0 = 100;
-    float A = 1;
-    float T = 1/48000;
-    float ph = 0;
-    float delta = 0;
+    double sampleRate = 48000.0f; //Sampling rate
+    float f0 = 100.0f; //Fundemental frequency
+    float A = 1.0f; //Amplitude
+    float T = 1.0f /48000.0f; //Sampling period
 
-    float clipArr[4] { 0, 0, 0, 0 };
-
-    // History
-    float vk_n1 = 0;
+    //State
+    float period_ts = 0.0f; //Current point in the period
+    float delta = 0.0f; //Normalized frequency
+    float clipArr[4] { 0, 0, 0, 0 }; //Array for storing clipping points
+    float vk_n1 = 0.0f; //
     bool flagArr[4]{0, 0, 0, 0};
 };

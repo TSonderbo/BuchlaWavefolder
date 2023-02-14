@@ -46,9 +46,11 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numCh
 	osc.prepare(spec);
 	gain.prepare(spec);
 	buchla.prepareToPlay(sampleRate);
-	gain.setGainLinear(0.1f);
+	gain.setGainLinear(0.01f);
 	adsr.setSampleRate(sampleRate);
 
+	osc.setFrequency(100);
+	buchla.setFundemental(100);
 	isPrepared = true;
 }
 
@@ -70,7 +72,9 @@ void SynthVoice::updateAmplitude(const float A)
 
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
-	if (!isVoiceActive()) return;
+	//if (!isVoiceActive()) return;
+
+	float maxVal = 0;
 
 	while (--numSamples >= 0)
 	{
@@ -78,17 +82,22 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
 		sample = buchla.processSample(sample);
 
-		//sample *= adsr.getNextSample();
-
 		//sample = gain.processSample(sample);
 
-		
+		if (abs(sample) > maxVal)
+		{
+			maxVal = abs(sample);
+		}
+
 		for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
 		{
 			outputBuffer.addSample(channel, startSample, sample);
 		}
 		startSample++;
+		
 	}
+	float g = (1 / maxVal) * 0.5;
+	outputBuffer.applyGain(g);
 
 	if (!adsr.isActive())
 		clearCurrentNote();

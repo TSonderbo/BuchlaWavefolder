@@ -43,7 +43,6 @@ private:
 
     std::unique_ptr<SliderAttachment> amplitudeAttachment;
 
-    ADSR adsr;
     ScopeComponent scopeComponent;
 
 
