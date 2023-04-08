@@ -16,11 +16,11 @@
 //==============================================================================
 /**
 */
-class FMSynthesizerAudioProcessorEditor  : public juce::AudioProcessorEditor
+class BuchlaAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    FMSynthesizerAudioProcessorEditor (FMSynthesizerAudioProcessor&);
-    ~FMSynthesizerAudioProcessorEditor() override;
+    BuchlaAudioProcessorEditor (BuchlaAudioProcessor&);
+    ~BuchlaAudioProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
@@ -30,7 +30,7 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     
-    FMSynthesizerAudioProcessor& audioProcessor;
+    BuchlaAudioProcessor& audioProcessor;
 
     using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
 
@@ -46,5 +46,5 @@ private:
     ScopeComponent scopeComponent;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FMSynthesizerAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BuchlaAudioProcessorEditor)
 };

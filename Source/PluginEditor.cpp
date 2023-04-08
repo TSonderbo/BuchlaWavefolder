@@ -10,7 +10,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-FMSynthesizerAudioProcessorEditor::FMSynthesizerAudioProcessorEditor (FMSynthesizerAudioProcessor& p)
+BuchlaAudioProcessorEditor::BuchlaAudioProcessorEditor (BuchlaAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
     , scopeComponent(audioProcessor.getAudioBufferQueue())
 {
@@ -22,12 +22,12 @@ FMSynthesizerAudioProcessorEditor::FMSynthesizerAudioProcessorEditor (FMSynthesi
     setSliderWithLabel(ampSlider, ampLabel, audioProcessor.apvts, "amplitude", amplitudeAttachment);
 }
 
-FMSynthesizerAudioProcessorEditor::~FMSynthesizerAudioProcessorEditor()
+BuchlaAudioProcessorEditor::~BuchlaAudioProcessorEditor()
 {
 }
 
 //==============================================================================
-void FMSynthesizerAudioProcessorEditor::paint (juce::Graphics& g)
+void BuchlaAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
@@ -37,7 +37,7 @@ void FMSynthesizerAudioProcessorEditor::paint (juce::Graphics& g)
     g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
 }
 
-void FMSynthesizerAudioProcessorEditor::resized()
+void BuchlaAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
@@ -51,7 +51,7 @@ void FMSynthesizerAudioProcessorEditor::resized()
 
 using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
 
-void FMSynthesizerAudioProcessorEditor::setSliderWithLabel(juce::Slider& slider, juce::Label& label, juce::AudioProcessorValueTreeState& apvts, juce::String paramId, std::unique_ptr<Attachment>& attachment)
+void BuchlaAudioProcessorEditor::setSliderWithLabel(juce::Slider& slider, juce::Label& label, juce::AudioProcessorValueTreeState& apvts, juce::String paramId, std::unique_ptr<Attachment>& attachment)
 {
     slider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);

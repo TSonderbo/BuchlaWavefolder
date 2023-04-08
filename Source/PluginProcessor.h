@@ -17,15 +17,15 @@
 //==============================================================================
 /**
 */
-class FMSynthesizerAudioProcessor  : public juce::AudioProcessor
+class BuchlaAudioProcessor  : public juce::AudioProcessor
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
 {
 public:
     //==============================================================================
-    FMSynthesizerAudioProcessor();
-    ~FMSynthesizerAudioProcessor() override;
+    BuchlaAudioProcessor();
+    ~BuchlaAudioProcessor() override;
 
 
     juce::AudioProcessorValueTreeState apvts;
@@ -76,5 +76,5 @@ private:
     ScopeDataCollector scopeDataCollector{ audioBufferQueue };
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FMSynthesizerAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BuchlaAudioProcessor)
 };

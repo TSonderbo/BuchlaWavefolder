@@ -10,7 +10,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-FMSynthesizerAudioProcessor::FMSynthesizerAudioProcessor()
+BuchlaAudioProcessor::BuchlaAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -26,18 +26,18 @@ FMSynthesizerAudioProcessor::FMSynthesizerAudioProcessor()
     synth.addVoice(new SynthVoice());
 }
 
-FMSynthesizerAudioProcessor::~FMSynthesizerAudioProcessor()
+BuchlaAudioProcessor::~BuchlaAudioProcessor()
 {
 
 }
 
 //==============================================================================
-const juce::String FMSynthesizerAudioProcessor::getName() const
+const juce::String BuchlaAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool FMSynthesizerAudioProcessor::acceptsMidi() const
+bool BuchlaAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -46,7 +46,7 @@ bool FMSynthesizerAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool FMSynthesizerAudioProcessor::producesMidi() const
+bool BuchlaAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -55,7 +55,7 @@ bool FMSynthesizerAudioProcessor::producesMidi() const
    #endif
 }
 
-bool FMSynthesizerAudioProcessor::isMidiEffect() const
+bool BuchlaAudioProcessor::isMidiEffect() const
 {
    #if JucePlugin_IsMidiEffect
     return true;
@@ -64,37 +64,37 @@ bool FMSynthesizerAudioProcessor::isMidiEffect() const
    #endif
 }
 
-double FMSynthesizerAudioProcessor::getTailLengthSeconds() const
+double BuchlaAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int FMSynthesizerAudioProcessor::getNumPrograms()
+int BuchlaAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int FMSynthesizerAudioProcessor::getCurrentProgram()
+int BuchlaAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void FMSynthesizerAudioProcessor::setCurrentProgram (int index)
+void BuchlaAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const juce::String FMSynthesizerAudioProcessor::getProgramName (int index)
+const juce::String BuchlaAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void FMSynthesizerAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void BuchlaAudioProcessor::changeProgramName (int index, const juce::String& newName)
 {
 }
 
 //==============================================================================
-void FMSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void BuchlaAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     synth.setCurrentPlaybackSampleRate(sampleRate);
 
@@ -107,14 +107,14 @@ void FMSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int samplesP
     }
 }
 
-void FMSynthesizerAudioProcessor::releaseResources()
+void BuchlaAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool FMSynthesizerAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool BuchlaAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
@@ -139,7 +139,7 @@ bool FMSynthesizerAudioProcessor::isBusesLayoutSupported (const BusesLayout& lay
 }
 #endif
 
-void FMSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void BuchlaAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -163,25 +163,25 @@ void FMSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer
 }
 
 //==============================================================================
-bool FMSynthesizerAudioProcessor::hasEditor() const
+bool BuchlaAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* FMSynthesizerAudioProcessor::createEditor()
+juce::AudioProcessorEditor* BuchlaAudioProcessor::createEditor()
 {
-    return new FMSynthesizerAudioProcessorEditor (*this);
+    return new BuchlaAudioProcessorEditor (*this);
 }
 
 //==============================================================================
-void FMSynthesizerAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void BuchlaAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void FMSynthesizerAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void BuchlaAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -191,10 +191,10 @@ void FMSynthesizerAudioProcessor::setStateInformation (const void* data, int siz
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new FMSynthesizerAudioProcessor();
+    return new BuchlaAudioProcessor();
 }
 
-juce::AudioProcessorValueTreeState::ParameterLayout FMSynthesizerAudioProcessor::createParams()
+juce::AudioProcessorValueTreeState::ParameterLayout BuchlaAudioProcessor::createParams()
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
@@ -206,7 +206,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMSynthesizerAudioProcessor:
     return { params.begin(), params.end() };
 }
 
-AudioBufferQueue& FMSynthesizerAudioProcessor::getAudioBufferQueue() 
+AudioBufferQueue& BuchlaAudioProcessor::getAudioBufferQueue() 
 { 
     return audioBufferQueue; 
 }

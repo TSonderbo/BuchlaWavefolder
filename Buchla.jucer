@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="wggqji" name="FMSynthesizer" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="wggqji" name="BuchlaWavefolder" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
-  <MAINGROUP id="dOS9tF" name="FMSynthesizer">
+  <MAINGROUP id="dOS9tF" name="BuchlaWavefolder">
     <GROUP id="{BEE3B2D0-A033-347A-C8F7-E13063A5882B}" name="Source">
       <GROUP id="{0CD72FAE-1C54-1E29-C0FE-CFDB34D71D14}" name="AudioScope">
         <FILE id="UVsccj" name="AudioBufferQueue.cpp" compile="1" resource="0"
